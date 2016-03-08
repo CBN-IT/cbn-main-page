@@ -1,0 +1,117 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--CBN elements-->
+<link rel="import" href="../cbn-update-version/cbn-update-version.html">
+<link rel="import" href="../cbn-loading-bar/cbn-loading-bar.html">
+<link rel="import" href="../cbn-sudo/cbn-sudo.html"><!--no element, just JS-->
+<link rel="import" href="../cbn-datastore/cbn-KeyFactory.html"><!--no element, just JS-->
+
+<!-- Iron elements -->
+<link rel="import" href="../iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../iron-localstorage/iron-localstorage.html">
+
+<!-- Paper elements -->
+<link rel="import" href="../paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-material/paper-material.html">
+<link rel="import" href="../paper-menu/paper-menu.html">
+<link rel="import" href="../paper-menu/paper-submenu.html">
+<link rel="import" href="../paper-scroll-header-panel/paper-scroll-header-panel.html">
+
+<!-- Neon elements -->
+<link rel="import" href="../neon-animation/neon-animations.html">
+
+<!-- Other imports-->
+<link rel="import" href="../cbn-grid/cbn-app-styles.html">
+
+<script src="leftMenuDrawer.js"></script>
+
+<dom-module id="cbn-main-page">
+	<template>
+		<style>
+			.showHideButtonOpened {
+				transform: rotateZ(-90deg);
+				left: 167px;
+			}
+
+			.showHideButtonClosed {
+				transform: rotateZ(90deg);
+				left: 2px;
+			}
+
+			#showHideDrawerButton {
+				transition: all 0.3s;
+				-webkit-transition: all 0.3s;
+				position: fixed;
+				bottom: 0;
+
+			}
+		</style>
+		<style include="cbn-app-styles"></style>
+		<cbn-update-version></cbn-update-version>
+		<paper-drawer-panel id="paperDrawerPanel" drawer-width="207px" small-drawer-width="45px" large-drawer-width="207px">
+			<paper-scroll-header-panel id="leftMenuScroll" drawer fixed vertical layout style="background-color: white;z-index: 1;transition: width 300ms;border-right:1px solid #CDCDCD" on-mouseenter="_showLeftMenuScroll" on-mouseleave="_hideLeftMenuScroll">
+				<div class="paper-header" id="toolbarTopLeft" style="height:55px;">
+					<div id="largeLogo">
+						<content select=".logo"></content>
+					</div>
+					<div id="smallLogo">
+						<content select=".square-logo"></content>
+					</div>
+				</div>
+				<paper-menu on-click="_blur" style="width:207px">
+					<content select="paper-submenu"></content>
+				</paper-menu>
+				<paper-icon-button id="showHideDrawerButton" class$="[[_computeShowHideButtonClass(drawerOpened)]]" icon="icons:file-upload" on-tap="_showHideLeftMenu"></paper-icon-button>
+				<iron-localstorage name="drawerOpened" value="{{drawerOpened}}" use-raw on-iron-localstorage-load-empty="initializeDrawerOpened" on-iron-localstorage-load="_onShowHideLeftMenu"></iron-localstorage>
+			</paper-scroll-header-panel>
+			<paper-header-panel main condenses keep-condensed-header class="vertical layout">
+				<div class="paper-header" id="mainToolbar" style="position: relative; display: flex; height: 55px;">
+					<content select=".toolbar"></content>
+
+					<cbn-loading-bar class="fit" style="top:auto; width:auto;"></cbn-loading-bar>
+				</div>
+				<div class="content flex vertical layout" style="height:100%;padding:10px;box-sizing:border-box">
+					<iron-pages attr-for-selected="data-route" selected="{{routeSection}}" class="flex vertical layout" id="pages">
+						<content select=".page"></content>
+					</iron-pages>
+					<content></content>
+				</div>
+			</paper-header-panel>
+		</paper-drawer-panel>
+	</template>
+</dom-module>
+
+<script>
+	(function () {
+		Polymer({
+
+			is: 'cbn-main-page',
+			behaviors: [Cbn.leftMenuDrawer],
+			properties: {
+				routeSection:{
+					type:String,
+					value: function(){
+						return "";
+					}
+				}
+			},
+			listeners: {},
+			ready: function () {
+			},
+			_blur: function (event) {
+				document.activeElement.blur();
+			},
+			_computeShowHideButtonClass:function(isOpened){
+				if(isOpened==="opened"){
+					return "showHideButtonOpened"
+				}else{
+					return "showHideButtonClosed";
+				}
+			}
+		})
+	})();
+</script>
