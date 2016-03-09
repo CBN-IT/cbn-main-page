@@ -1,0 +1,244 @@
+<script>
+	if (window.Cbn === undefined) {
+		window.Cbn = {};
+	}
+	if (window.Cbn.facturi === undefined) {
+		Cbn.facturi = {};
+	}
+	Cbn.facturi.pageBehavior = {
+		properties: {
+			listEntities: {
+				type: Array,
+				notify: true
+			},
+			namespace: {
+				type: String
+			},
+			currentModel: {
+				type: Object,
+				value: function(){
+					return {};
+				}
+			},
+			listSabloane: {
+				type: Array
+			},
+			listSabloaneKind: {
+				type: Array
+			}
+			
+		},
+		observers: [
+			"namespaceChanged(namespace)",
+			"sabloaneChanged(listSabloane.splices)"
+		],
+		ready: function () {
+		},
+		message: function (text, type) {
+			this.fire("cbn-message", {
+				"text": text,
+				"type": type
+			});
+		},
+		namespaceChanged: function(){
+			this.listEntities = undefined;
+		},
+		capitalizeType: function (string) {
+			return this.type.charAt(0).toUpperCase() + this.type.slice(1);
+		},
+		_equals: function (a, b) {
+			return a == b;
+		},
+		_isEmpty: function (a) {
+			return (a == undefined || a == '');
+		},
+		_throwEvent: function (event) {
+			event.preventDefault();
+			event.stopPropagation();
+			var name = event.currentTarget.getAttribute("data-event");
+			if (!name) {
+				console.error("Please specify a `data-event` attribute!");
+				return;
+			}
+			event.currentTarget.fire(name, {
+				originalEvent: event,
+				item: event.model.item
+			});
+		},
+		_setParams: function () {
+			var returnValue = {};
+			for (var i = 0; i < arguments.length; i = i + 2) {
+				returnValue[arguments[i]] = arguments[i + 1];
+			}
+			return returnValue;
+		},
+		selectSectionApp: function (routeMenu, routeSection) {
+			app.route = routeMenu;
+			if (routeSection != undefined) {
+				app.routeSection = routeSection;
+			} else {
+				app.routeSection = routeMenu;
+			}
+		},
+		addOne: function (index) {
+			return index + 1;
+		},
+		generareRaport: function (hashReport, hash, descarcare) {
+			var iframe = document.createElement("iframe");
+			iframe.style.display = "none";
+			document.body.appendChild(iframe);
+			var html = "<!DOCTYPE html><html><head><title></title></head><body><form id='formRaport' action='/do/Raport' target=\"_blank\" method='POST'>";
+			html += "<input type='hidden' name='namespace' value='" + this.namespace + "'/>";
+			html += "<input type='hidden' name='hashReport' value='" + hashReport + "'/>";
+			html += "<input type='hidden' name='keys' value='" + hash + "'/>";
+			html += "<input type='hidden' name='descarcarePdf' value='" + descarcare + "'/>";
+			html += "<input type='hidden' name='namespace' value='" + app.namespace + "'/>";
+			html += "<input type='hidden' name='download' value='inline'/>";
+			html += "</form></body><script>";
+			html += "document.getElementById('formRaport').submit();";
+			html += "<" + "/script>" + "</html>";
+			iframe.contentDocument.write(html);
+		},
+		_getAsList: function (list) {
+			if (list instanceof Array) {
+				return list.join(", ");
+			} else {
+				return list;
+			}
+		},
+		scrollIntoFacturaView: function (event) {
+			event.currentTarget.selectedItem.scrollIntoViewIfNeeded(true);
+		},
+		opendDialogDelete: function (_hash, mesaj, callback, url) {
+			this.fire("cbn-confirm-delete",{
+				hash: _hash,
+				mesaj: mesaj,
+				callback: callback || this.deletedEntity.bind(this),
+				url:url
+			});
+		},
+		require: function (type, callback) {
+			var types = [type];
+			if (type instanceof Array) {
+				types = type;
+			}
+			var cback = null;
+			var force = false;
+			if (typeof callback === "boolean") {
+				force = callback;
+			} else {
+				cback = callback;
+			}
+			var ps = []; 
+			types.forEach(function (type) {
+				var p = new Promise(function (resolve) {
+					this.fire("cbn-require", {
+						type: type,
+						callback: function () {
+							resolve();
+						},
+						force: force
+					});
+				}.bind(this));
+				ps.push(p);
+			}.bind(this));
+			Promise.all(ps).then(function () {
+				if (cback !== null && typeof cback === "function") {
+					cback();
+				}
+			});
+
+		},
+		getRequirement: function (event) {
+			var type = event.detail.type;
+			if (type == this.type) {
+				if (!this.hasRequirement() || event.detail.force) {
+					this.getRequirementPromise().then(function () {
+						if (typeof event.detail.callback === "function") {
+							event.detail.callback();
+						}
+					});
+				} else {
+					if (typeof event.detail.callback === "function") {
+						event.detail.callback();
+					}
+				}
+			}
+		},
+		getRequirementPromise: function(){
+			return this.$.getAjax.generateRequest().completes;
+		},
+		//functii folosite in fiecare page
+		editFromTable: function (event) {
+			page.show('/'+this.type+"/editeaza/"+event.detail.item._hash);
+		},
+		formularNou: function () {
+			page.show('/' + this.type + "/adauga");
+		},
+		submitForm:function(){
+			this.$.form.submit();
+		},
+		onSavedResponse : function (event) {
+			page.replace('/' + this.type + '/editeaza/' + event.detail.response._hash,undefined,undefined,false);
+			page.show('/' + this.type);
+			this.message("Inregistrarea a fost salvata");
+		},
+		deletedEntity: function (event) {
+			var hash = event.detail.response._hash;
+			var idx = -1;
+			this.get("listEntities").forEach(function (itm, i) {
+				if (itm._hash === hash) {
+					idx = i;
+				}
+			});
+			if (hash && idx !== -1) {
+				this.splice("listEntities", idx, 1);
+			}
+		},
+		onCbnCifRequest: function (e) {
+			if (((this.type == "factura" || this.type == "proforma") && this.currentModelFactura.cifClient === e.detail.value) ||
+				((this.type == "factura" || this.type == "proforma") && this.currentModelDetaliiClient._keyClient instanceof Object) ||
+				(this.type == "client" && !this._isEmpty(this.currentModel._hash))||
+				(this.type == "firma") ) {
+				e.preventDefault();
+				return;
+			}
+			this.fire("cbn-message", {
+				"text": "Datele firmei " + e.detail.value + " se incarca din surse externe. Va rugam asteptati."
+			});
+		},
+		onCbnCifResponse: function (e) {
+			this.fire("confirm-autocompletition", 
+				function () {
+					this.confirmedAutocompletition.apply(this, [e.detail.response]);
+					this.fire("cbn-message", {
+						"text": "Datele firmei " + e.detail.response["Nume Firma"] + " au fost incarcate"
+					});
+				}.bind(this)
+			);
+			//TODO: this is not working.
+			//form.set("model.localitateFirma", {nume_judet: r["Judet"], nume_superior: r["Localitate"]});
+		},
+		sabloaneChanged: function(){
+			var sabloaneKind = [];
+			if(this.listSabloane != undefined){
+				this.listSabloane.forEach(function (item, i) {
+					if (item.entitate == this.capitalizeType()) {
+						sabloaneKind.push(item);
+					}
+				}.bind(this));
+			}
+			this.listSabloaneKind = sabloaneKind;
+		},
+		savedEntity: function(){
+			this.message("Inregistrarea a fost salvata");
+		},
+		onIbanChanged: function (event) {
+			var form = event.currentTarget;
+			var ibanName = event.target.name;
+			var suffix = ibanName.replace("iban", "");
+			form.set("model.banca" + suffix, event.detail.bank);
+			form.set("model.tara" + suffix, event.detail.country);
+		} 
+	};
+</script>
