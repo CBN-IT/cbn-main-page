@@ -27,7 +27,7 @@
         "cbn-loading-bar": "git@bitbucket.org:cbn-it/cbn-loading-bar#master",
         "cbn-sudo": "git@bitbucket.org:cbn-it/cbn-sudo#master",
         "cbn-datastore": "git@bitbucket.org:cbn-it/cbn-datastore#master",
-        "cbn-grid": "git@bitbucket.org:cbn-it/cbn-grid#polymer1.0"
+        "cbn-grid": "git@bitbucket.org:cbn-it/cbn-grid#master"
     },
     "devDependencies": {}
 }
