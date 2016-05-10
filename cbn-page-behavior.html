@@ -207,6 +207,13 @@
 				e.preventDefault();
 				return;
 			}
+			if ((this.type == "contract" && this.currentModelContract.cifArendator === e.detail.value) ||
+				(this.type == "contract"  && this.currentModelArendator._keyArendator instanceof Object) ||
+				(this.type == "arendator" && !this._isEmpty(this.currentModel._hash)) ||
+				(this.type == "firma") ) {
+				e.preventDefault();
+				return;
+			}
 			this.fire("cbn-message", {
 				"text": "Datele firmei " + e.detail.value + " se incarca din surse externe. Va rugam asteptati."
 			});
@@ -233,6 +240,24 @@
 				}.bind(this));
 			}
 			this.listSabloaneKind = sabloaneKind;
+		},
+		checkModul: function (e){
+			var button = e.currentTarget;
+			var functionName = button.getAttribute("function");
+			if(window.firma["modul"] == "standard"){
+				this.fire("upgrade-modul");
+			} else{
+				this[functionName](e);
+
+			}
+		},
+		copyAndSetProperties: function (from, path, properties) {
+			for (var key in properties) {
+				if (!properties.hasOwnProperty(key)) {
+					continue;
+				}
+				this.set(path + [properties[key]], from[properties[key]]);
+			}
 		},
 		savedEntity: function(){
 			this.message("Inregistrarea a fost salvata");
