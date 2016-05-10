@@ -25,6 +25,10 @@
 			},
 			listSabloaneKind: {
 				type: Array
+			},
+			instantiated:{
+				type:Boolean,
+				value:false
 			}
 			
 		},
@@ -176,7 +180,7 @@
 			page.show('/' + this.type + "/adauga");
 		},
 		submitForm:function(){
-			this.$.form.submit();
+			this.$$('form').submit();
 		},
 		onSavedResponse : function (event) {
 			page.replace('/' + this.type + '/editeaza/' + event.detail.response._hash,undefined,undefined,false);
