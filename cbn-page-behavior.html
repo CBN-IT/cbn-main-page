@@ -239,6 +239,17 @@
 			var suffix = ibanName.replace("iban", "");
 			form.set("model.banca" + suffix, event.detail.bank);
 			form.set("model.tara" + suffix, event.detail.country);
-		} 
+		},
+		/**
+		 * Returns whether the given value is null, undefined or empty string.
+		 *
+		 * @param {*} val The value to check.
+		 * @return {Boolean} True if the value is Null/Undefined/Empty.
+		 */
+		_isNUE: function (val) {
+			return val === undefined || val === null ||
+				(typeof val === "string" && val.trim().length === 0) ||
+				((val instanceof Array) && val.length === 0);
+		}
 	};
 </script>
