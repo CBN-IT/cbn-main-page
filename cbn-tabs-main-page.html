@@ -104,7 +104,8 @@
 			},
 			selectedTab: function(event, item){
 				var newRoute = item.item.getAttribute("route");
-				if(this.route != newRoute){
+				var newSectionRoute = item.item.getAttribute("routeSection");
+				if(this.routeSection != newSectionRoute){
 					window.page.show(newRoute);
 				}
 			}
