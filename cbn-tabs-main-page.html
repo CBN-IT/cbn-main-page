@@ -64,7 +64,7 @@
 			<paper-toolbar class="medium-tall" id="#mainToolbar">
 				<content select=".toolbar"></content>
 				<div class="middle fit">
-					<paper-tabs selected="{{route}}" attr-for-selected="route" on-iron-select="selectedTab">
+					<paper-tabs selected="{{route}}" attr-for-selected="route" on-tap="tapedTab">
 						<content select=".tab"></content>
 					</paper-tabs>
 					<cbn-loading-bar style="top:auto; width:auto;"></cbn-loading-bar>
@@ -102,11 +102,15 @@
 			listeners: {},
 			ready: function () {
 			},
-			selectedTab: function(event, item){
-				var newRoute = item.item.getAttribute("route");
-				var newSectionRoute = item.item.getAttribute("routeSection");
-				if(this.routeSection != newSectionRoute){
-					window.page.show(newRoute);
+			tapedTab: function(event){
+				for(var i=0; i<event.path.length;i++){
+					if(event.path[i]["tagName"] == "PAPER-TAB"){
+						var newRoute = event.path[i].getAttribute("route");
+						var newSectionRoute = event.path[i].getAttribute("routeSection");
+						if(this.routeSection != newSectionRoute){
+							window.page.show(newRoute);
+						}
+					}
 				}
 			}
 		})
