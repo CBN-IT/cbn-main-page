@@ -1,0 +1,113 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--CBN elements-->
+<link rel="import" href="../cbn-update-version/cbn-update-version.html">
+<link rel="import" href="../cbn-loading-bar/cbn-loading-bar.html">
+<link rel="import" href="../cbn-sudo/cbn-sudo.html"><!--no element, just JS-->
+<link rel="import" href="../cbn-datastore/cbn-KeyFactory.html"><!--no element, just JS-->
+
+<!-- Iron elements -->
+<link rel="import" href="../iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../iron-localstorage/iron-localstorage.html">
+
+<!-- Paper elements -->
+<link rel="import" href="../paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../paper-tabs/paper-tab.html">
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-material/paper-material.html">
+<link rel="import" href="../paper-menu/paper-menu.html">
+<link rel="import" href="../paper-menu/paper-submenu.html">
+<link rel="import" href="../paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../paper-scroll-header-panel/paper-scroll-header-panel.html">
+
+<!-- Neon elements -->
+<link rel="import" href="../neon-animation/neon-animations.html">
+
+<!-- Other imports-->
+<link rel="import" href="../cbn-grid/cbn-app-styles.html">
+
+<script src="leftMenuDrawer.js"></script>
+
+<dom-module id="cbn-tabs-main-page">
+	<template>
+		<style include="cbn-app-styles"></style>
+		<style>
+			:host{
+				--paper-tabs-selection-bar-color: var(--paper-yellow-a100);
+				--paper-toolbar-background: #3277EC;
+				--paper-tab-ink: var(--paper-yellow-a100);
+				--paper-scroll-header-container:{
+
+				}
+			}
+			paper-tabs {
+				background-color: #3277EC;
+				color: #fff;
+			}
+			paper-scroll-header-panel {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+			}
+			paper-scroll-header-panel::shadow #headerContainer{
+				z-index:100;
+			}
+		</style>
+		<cbn-update-version></cbn-update-version>
+		<paper-scroll-header-panel condenses keep-condensed-header header-height="110" condensed-header-height="55" class="vertical layout" style="height: 100%;">
+			<paper-toolbar class="medium-tall" id="#mainToolbar">
+				<content select=".toolbar"></content>
+				<div class="middle fit">
+					<paper-tabs selected="{{route}}" attr-for-selected="route" on-iron-select="selectedTab">
+						<content select=".tab"></content>
+					</paper-tabs>
+					<cbn-loading-bar style="top:auto; width:auto;"></cbn-loading-bar>
+				</div>
+			</paper-toolbar>
+			<div class="content flex vertical layout" style="height:100%;padding:0;box-sizing:border-box">
+				<iron-pages attr-for-selected="data-route" selected="{{routeSection}}" class="flex vertical layout" id="pages">
+					<content select=".page"></content>
+				</iron-pages>
+				<content></content>
+			</div>
+		</paper-scroll-header-panel>
+	</template>
+</dom-module>
+
+<script>
+	(function () {
+		Polymer({
+
+			is: 'cbn-tabs-main-page',
+			properties: {
+				routeSection:{
+					type:String,
+					value: function(){
+						return "";
+					}
+				},
+				route:{
+					type:String,
+					value: function(){
+						return "";
+					}
+				}
+			},
+			listeners: {},
+			ready: function () {
+			},
+			selectedTab: function(event, item){
+				var newRoute = item.item.getAttribute("route");
+				if(this.route != newRoute){
+					window.page.show(newRoute);
+				}
+			}
+		})
+	})();
+</script>
