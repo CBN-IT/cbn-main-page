@@ -38,14 +38,14 @@
 		<style>
 			:host{
 				--paper-tabs-selection-bar-color: var(--paper-yellow-a100);
-				--paper-toolbar-background: #3277EC;
+				--paper-toolbar-background: var(--toolbar-color);
 				--paper-tab-ink: var(--paper-yellow-a100);
 				--paper-scroll-header-container:{
 
 				}
 			}
 			paper-tabs {
-				background-color: #3277EC;
+				background-color: var(--toolbar-color);
 				color: #fff;
 			}
 			paper-scroll-header-panel {
@@ -57,6 +57,9 @@
 			}
 			paper-scroll-header-panel::shadow #headerContainer{
 				z-index:5;
+			}
+			paper-toolbar{
+				background-color: var(--toolbar-color);
 			}
 		</style>
 		<cbn-update-version></cbn-update-version>
