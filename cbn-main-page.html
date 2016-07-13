@@ -33,18 +33,25 @@
 	<template>
 		<style>
 			.showHideButtonOpened {
-				transform: rotateZ(-90deg);
-				left: 167px;
+				left: 0px;
 			}
 
 			.showHideButtonClosed {
-				transform: rotateZ(90deg);
-				left: 2px;
+				left: -162px;
 			}
-
-			#showHideDrawerButton {
+			.showHideButtonOpened> #showHideDrawerButton{
+				transform: rotateZ(-90deg);
+			}
+			.showHideButtonClosed> #showHideDrawerButton{
+				transform: rotateZ(90deg);
+			}
+			#showHideDrawerButton,#paperIconContainer {
 				transition: all 0.3s;
 				-webkit-transition: all 0.3s;
+			}
+			#showHideDrawerButton{
+				right:0;
+				position:absolute;
 			}
 			#paperIconContainer {
 				height: 40px;
@@ -52,6 +59,14 @@
 				position: fixed;
 				bottom: 0;
 				width: 207px;
+			}
+			#leftMenuScroll {
+				--paper-scroll-header-panel-container:{
+					bottom:40px;
+				};
+				--paper-scroll-header-container:{
+					bottom:40px;	
+				};
 			}
 		</style>
 		<style include="cbn-app-styles"></style>
@@ -68,14 +83,16 @@
 				</div>
 				<paper-menu on-click="_blur" style="width:207px; margin-bottom: 40px;">
 					<content select="paper-submenu"></content>
+					<div style="height:500px;"></div>
 				</paper-menu>
-				<div id="paperIconContainer">
-					<paper-icon-button id="showHideDrawerButton" class$="[[_computeShowHideButtonClass(drawerOpened)]]" icon="icons:file-upload" on-tap="_showHideLeftMenu"></paper-icon-button>
+				<div id="paperIconContainer" class$="[[_computeShowHideButtonClass(drawerOpened)]]">
+					<paper-icon-button id="showHideDrawerButton"  icon="icons:file-upload" on-tap="_showHideLeftMenu"></paper-icon-button>
 				</div>
 					<iron-localstorage name="drawerOpened" value="{{drawerOpened}}" use-raw on-iron-localstorage-load-empty="initializeDrawerOpened" on-iron-localstorage-load="_onShowHideLeftMenu"></iron-localstorage>
 			</paper-scroll-header-panel>
 			<paper-header-panel main condenses keep-condensed-header class="vertical layout">
 				<div class="paper-header" id="mainToolbar" style="position: relative; display: flex; height: 55px;">
+					<paper-icon-button icon="icons:menu" paper-drawer-toggle class="toolbar" style="flex-shrink: 0;"></paper-icon-button>
 					<content select=".toolbar"></content>
 
 					<cbn-loading-bar class="fit" style="top:auto; width:auto;"></cbn-loading-bar>
