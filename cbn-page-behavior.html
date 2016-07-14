@@ -189,14 +189,17 @@
 		},
 		deletedEntity: function (event) {
 			var hash = event.detail.response._hash;
+			this.deleteFromArray(hash,"listEntities");
+		},
+		deleteFromArray: function(hash,array){
 			var idx = -1;
-			this.get("listEntities").forEach(function (itm, i) {
+			this.get(array).forEach(function (itm, i) {
 				if (itm._hash === hash) {
 					idx = i;
 				}
 			});
 			if (hash && idx !== -1) {
-				this.splice("listEntities", idx, 1);
+				this.splice(array, idx, 1);
 			}
 		},
 		onCbnCifRequest: function (e) {
