@@ -87,17 +87,22 @@
 		addOne: function (index) {
 			return index*1 + 1;
 		},
-		generareRaport: function (hashReport, hash, descarcare) {
+		generareRaport: function (hashReport, hash, descarcare, params) {
 			var iframe = document.createElement("iframe");
 			iframe.style.display = "none";
 			document.body.appendChild(iframe);
 			var html = "<!DOCTYPE html><html><head><title></title></head><body><form id='formRaport' action='/do/Raport' target=\"_blank\" method='POST'>";
 			html += "<input type='hidden' name='namespace' value='" + this.namespace + "'/>";
 			html += "<input type='hidden' name='hashReport' value='" + hashReport + "'/>";
-			html += "<input type='hidden' name='keys' value='" + hash + "'/>";
+			html += "<input type='hidden' name='keys' value='" + (hash != undefined ? hash : "") + "'/>";
 			html += "<input type='hidden' name='descarcarePdf' value='" + descarcare + "'/>";
-			html += "<input type='hidden' name='namespace' value='" + app.namespace + "'/>";
 			html += "<input type='hidden' name='download' value='inline'/>";
+			if(params != undefined){
+				var keys = Object.keys(params);
+				for(var i=0; i<keys.length; i++){
+					html += "<input type='hidden' name='"+"ADMA."+keys+"' value='" + params[keys] + "'/>";
+				}
+			}
 			html += "</form></body><script>";
 			html += "document.getElementById('formRaport').submit();";
 			html += "<" + "/script>" + "</html>";
