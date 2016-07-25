@@ -94,7 +94,17 @@
 			var html = "<!DOCTYPE html><html><head><title></title></head><body><form id='formRaport' action='/do/Raport' target=\"_blank\" method='POST'>";
 			html += "<input type='hidden' name='namespace' value='" + this.namespace + "'/>";
 			html += "<input type='hidden' name='hashReport' value='" + hashReport + "'/>";
-			html += "<input type='hidden' name='keys' value='" + (hash != undefined ? hash : "") + "'/>";
+
+			if(hash != undefined){
+				if(hash instanceof Array){
+					for (var i = 0; i < hash.length; i++) {
+						html += "<input type='hidden' name='keys' value='" + hash[i] + "'/>";
+					}
+				} else {
+					html += "<input type='hidden' name='keys' value='" + hash + "'/>";
+				}
+			}
+			
 			html += "<input type='hidden' name='descarcarePdf' value='" + descarcare + "'/>";
 			html += "<input type='hidden' name='download' value='inline'/>";
 			if(params != undefined){
