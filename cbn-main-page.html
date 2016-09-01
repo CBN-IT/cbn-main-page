@@ -68,6 +68,12 @@
 					bottom:40px;	
 				};
 			}
+			.content {
+				padding: 10px;
+				height:100%;
+				box-sizing:border-box;
+				@apply(--cbn-content-app);
+			}
 		</style>
 		<style include="cbn-app-styles"></style>
 		<cbn-update-version></cbn-update-version>
@@ -96,7 +102,7 @@
 
 					<cbn-loading-bar class="fit" style="top:auto; width:auto;"></cbn-loading-bar>
 				</div>
-				<div class="content flex vertical layout" style="height:100%;padding:10px;box-sizing:border-box">
+				<div class="content flex vertical layout">
 					<iron-pages attr-for-selected="data-route" selected="{{routeSection}}" class="flex vertical layout" id="pages">
 						<content select=".page"></content>
 					</iron-pages>
