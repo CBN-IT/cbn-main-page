@@ -72,7 +72,15 @@
 		_setParams: function () {
 			var returnValue = {};
 			for (var i = 0; i < arguments.length; i = i + 2) {
-				returnValue[arguments[i]] = arguments[i + 1];
+				if(returnValue[arguments[i]]!=null){
+					if(returnValue[arguments[i]] instanceof Array){
+						returnValue[arguments[i]].push(arguments[i + 1]);
+					}else{
+						returnValue[arguments[i]] = [returnValue[arguments[i]],arguments[i + 1] ];
+					}
+				}else{
+					returnValue[arguments[i]] = arguments[i + 1];
+				}
 			}
 			return returnValue;
 		},
