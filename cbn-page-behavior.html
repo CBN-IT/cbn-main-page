@@ -197,7 +197,7 @@
 		},
 		//functii folosite in fiecare page
 		editFromTable: function (event) {
-			page.show('/'+this.type+"/editeaza/"+event.detail.item._hash);
+			page.show(this.dataRoute+"/editeaza/"+event.detail.item._hash);
 		},
 		formularNou: function () {
 			page.show('/' + this.type + "/adauga");
@@ -206,8 +206,8 @@
 			this.$$('form').submit();
 		},
 		onSavedResponse : function (event) {
-			page.replace('/' + this.type + '/editeaza/' + event.detail.response._hash,undefined,undefined,false);
-			page.show('/' + this.type);
+			page.replace(this.dataRoute.replace("/adauga","/editeaza/") + event.detail.response._hash,undefined,undefined,false);
+			page.show(this.dataRoute.replace("/adauga",""));
 			this.message("Inregistrarea a fost salvata");
 		},
 		deletedEntity: function (event) {
