@@ -7,7 +7,7 @@
 <link rel="import" href="../cbn-datastore/cbn-KeyFactory.html"><!--no element, just JS-->
 
 <!-- Iron elements -->
-<link rel="import" href="../iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../iron-localstorage/iron-localstorage.html">
@@ -76,6 +76,7 @@
 			}
 		</style>
 		<style include="cbn-app-styles"></style>
+		<style include="iron-flex"></style>
 		<cbn-update-version></cbn-update-version>
 		<paper-drawer-panel id="paperDrawerPanel" drawer-width="207px" small-drawer-width="45px" large-drawer-width="207px">
 			<paper-scroll-header-panel id="leftMenuScroll" drawer fixed vertical layout style="background-color: white;z-index: 1;transition: width 300ms;border-right:1px solid #CDCDCD" on-mouseenter="_showLeftMenuScroll" on-mouseleave="_hideLeftMenuScroll">
