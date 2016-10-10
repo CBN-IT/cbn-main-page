@@ -33,7 +33,7 @@
 	<template>
 		<style>
 			.showHideButtonOpened {
-				left: 0px;
+				left: 0;
 			}
 
 			.showHideButtonClosed {
@@ -77,6 +77,7 @@
 		</style>
 		<style include="cbn-app-styles"></style>
 		<style include="iron-flex"></style>
+		<style include="iron-positioning"></style>
 		<cbn-update-version></cbn-update-version>
 		<paper-drawer-panel id="paperDrawerPanel" drawer-width="207px" small-drawer-width="45px" large-drawer-width="207px">
 			<paper-scroll-header-panel id="leftMenuScroll" drawer fixed vertical layout style="background-color: white;z-index: 1;transition: width 300ms;border-right:1px solid #CDCDCD" on-mouseenter="_showLeftMenuScroll" on-mouseleave="_hideLeftMenuScroll">
