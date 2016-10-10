@@ -125,7 +125,8 @@
 					type:String,
 					value: function(){
 						return "";
-					}
+					},
+					observer: "close"
 				}
 			},
 			listeners: {},
@@ -140,6 +141,9 @@
 				}else{
 					return "showHideButtonClosed";
 				}
+			},
+			close: function(){
+				this.$.paperDrawerPanel.selected="main"
 			}
 		})
 	})();
