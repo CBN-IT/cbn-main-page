@@ -305,6 +305,24 @@
 			return val === undefined || val === null ||
 				(typeof val === "string" && val.trim().length === 0) ||
 				((val instanceof Array) && val.length === 0);
+		},
+		hideFormElement:function(form,name){
+			var el = form.querySelector("cbn-dynamic-form>[name="+name+"]");
+			if (el.style.display != "none") {
+				el.oldDisplay = el.style.display;
+				el.oldValidation = el.validation;
+				el.style.display = "none";
+				el.validation = {required: false};
+			}
+		},
+		showFormElement:function(form,name){
+			var el = form.querySelector("cbn-dynamic-form>[name="+name+"]");
+			if (el.style.display == "none") {
+				el.style.display = el.oldDisplay;
+				el.validation = el.oldValidation;
+				el.oldDisplay = null;
+				el.oldValidation = null;
+			}
 		}
 	};
 </script>
