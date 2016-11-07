@@ -306,9 +306,10 @@
 				(typeof val === "string" && val.trim().length === 0) ||
 				((val instanceof Array) && val.length === 0);
 		},
-		hideFormElement: function (form) {
-			for (var i = 1; i < arguments.length; i++) {
+		hideFormElement: function (form, modelName) {
+			for (var i = 2; i < arguments.length; i++) {
 				var name = arguments[i];
+				this.set(modelName + "." + name,"");
 				var el = form.querySelector("cbn-dynamic-form>[name=" + name + "]");
 				if (el != null && el.style.display != "none") {
 					el.oldDisplay = el.style.display;
