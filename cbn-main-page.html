@@ -52,10 +52,11 @@
 			#showHideDrawerButton{
 				right:0;
 				position:absolute;
+				color: var(--cbn-main-page-button-color,black);
 			}
 			#paperIconContainer {
 				height: 40px;
-				background-color: white;
+				background-color: var(--cbn-main-page-color, white);
 				position: fixed;
 				bottom: 0;
 				width: 207px;
@@ -63,10 +64,16 @@
 			#leftMenuScroll {
 				--paper-scroll-header-panel-container:{
 					bottom:40px;
+					background-color: var(--cbn-main-page-color, white);
 				};
 				--paper-scroll-header-container:{
-					bottom:40px;	
+					bottom:40px;
+					background-color: var(--cbn-main-page-color, white);
 				};
+				background-color: var(--cbn-main-page-color, white)!important;
+			}
+			paper-menu{
+				background-color: var(--cbn-main-page-color, white);
 			}
 			.content {
 				padding: 10px;
