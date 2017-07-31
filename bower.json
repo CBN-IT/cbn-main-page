@@ -27,7 +27,8 @@
         "cbn-loading-bar": "CBN-IT/cbn-loading-bar#master",
         "cbn-sudo": "CBN-IT/cbn-sudo#master",
         "cbn-datastore": "CBN-IT/cbn-datastore#master",
-        "cbn-grid": "CBN-IT/cbn-grid#master"
+        "cbn-grid": "CBN-IT/cbn-grid#master",
+        "cbn-checkbox":"CBN_IT/cbn-checkbox#master"
     },
     "devDependencies": {}
 }
