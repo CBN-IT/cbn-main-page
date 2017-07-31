@@ -28,7 +28,7 @@
         "cbn-sudo": "CBN-IT/cbn-sudo#master",
         "cbn-datastore": "CBN-IT/cbn-datastore#master",
         "cbn-grid": "CBN-IT/cbn-grid#master",
-        "cbn-checkbox":"CBN_IT/cbn-checkbox#master"
+        "cbn-checkbox":"CBN-IT/cbn-checkbox#master"
     },
     "devDependencies": {}
 }
