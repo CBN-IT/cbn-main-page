@@ -29,6 +29,9 @@
 			instantiated:{
 				type:Boolean,
 				value:false
+			},
+			selectedLanguage: {
+				type: String
 			}
 			
 		},
@@ -36,13 +39,20 @@
 			"namespaceChanged(namespace)",
 			"sabloaneChanged(listSabloane.splices)"
 		],
-		ready: function () {
+		attached: function(){
+		 	this.listen(document,"cbn-changed-language","changedLanguage");   
 		},
 		message: function (text, type) {
 			this.fire("cbn-message", {
 				"text": text,
 				"type": type
 			});
+		},
+		changedLanguage: function(event){
+		    this.selectedLanguage = event.detail.selectedLanguage;   
+		},
+		_computedLanguage: function(language,name){
+			return window["resources"][name][language] != undefined ? window["resources"][name][language] : window["resources"][name]["en"];
 		},
 		namespaceChanged: function(){
 			this.listEntities = undefined;
