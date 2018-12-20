@@ -105,11 +105,15 @@
 		addOne: function (index) {
 			return index*1 + 1;
 		},
-		generareRaport: function (hashReport, hash, descarcare, params) {
+		generareRaport: function (hashReport, hash, descarcare, params, multiplicareProcese) {
 			var iframe = document.createElement("iframe");
 			iframe.style.display = "none";
 			document.body.appendChild(iframe);
-			var html = "<!DOCTYPE html><html><head><title></title></head><body><form id='formRaport' action='/do/Raport' target=\"_blank\" method='POST'>";
+			var url = "/do/Raport";
+			if(multiplicareProcese==="NodeJS"){
+				url="http://raport.cbn-it.ro/"
+			}
+			var html = "<!DOCTYPE html><html><head><title></title></head><body><form id='formRaport' action='"+url+"' target=\"_blank\" method='POST'>";
 			html += "<input type='hidden' name='namespace' value='" + this.namespace + "'/>";
 			html += "<input type='hidden' name='hashReport' value='" + hashReport + "'/>";
 
