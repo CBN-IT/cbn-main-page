@@ -81,6 +81,9 @@
 				box-sizing:border-box;
 				@apply(--cbn-content-app);
 			}
+			.content>*{
+				min-height: 0;
+			}
 		</style>
 		<style include="cbn-app-styles"></style>
 		<style include="iron-flex"></style>
@@ -105,7 +108,7 @@
 					<iron-localstorage name="drawerOpened" value="{{drawerOpened}}" use-raw on-iron-localstorage-load-empty="initializeDrawerOpened" on-iron-localstorage-load="_onShowHideLeftMenu"></iron-localstorage>
 			</paper-scroll-header-panel>
 			<paper-header-panel main condenses keep-condensed-header class="vertical layout">
-				<div class="paper-header" id="mainToolbar" style="position: relative; display: flex; height: 55px;">
+				<div class="paper-header" id="mainToolbar" style="position: relative; display: flex; height: 55px;flex-shrink: 0;">
 					<paper-icon-button icon="icons:menu" paper-drawer-toggle class="toolbar" style="flex-shrink: 0;"></paper-icon-button>
 					<content select=".toolbar"></content>
 
